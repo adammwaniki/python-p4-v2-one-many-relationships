@@ -3,9 +3,11 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 
-metadata = MetaData(naming_convention={
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-})
+metadata = MetaData(
+    naming_convention={
+        "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    }
+)
 
 db = SQLAlchemy(metadata=metadata)
 
@@ -18,12 +20,11 @@ class Employee(db.Model):
     hire_date = db.Column(db.Date)
 
     # Relationship mapping the employee to related reviews
-    reviews = db.relationship(
-        'Review', back_populates="employee", cascade='all, delete-orphan')
+    reviews = db.relationship('Review', back_populates="employee")
 
     # Relationship mapping employee to related onboarding
     onboarding = db.relationship(
-        'Onboarding', uselist=False, back_populates='employee', cascade='all, delete-orphan')
+        'Onboarding', uselist=False, back_populates='employee')
 
     def __repr__(self):
         return f'<Employee {self.id}, {self.name}, {self.hire_date}>'
